@@ -28,9 +28,6 @@ define([
             //Is this the best way to swap out graphics - maybe best to add both graphics on load and then toggle classes on device:changed, device:resize?
             this.listenTo(Adapt, 'device:changed', this.onPageReady);
             this.listenTo(Adapt, 'device:resize', this.onPageReady);
-            
-			
-		
 		},
 
 		onPageReady: function() {
@@ -52,27 +49,23 @@ define([
 				this.$blockElements[id] = $blockElement;
 				this.$blockElements[id].on("onscreen", this.callbacks[id]);
 
-
 				var options = blockModel.get('_blockBackground');
                 
                 //Initially set the background graphic and height - this will be called on window resize and device
                 this.setBackgroundGraphic($blockElement, options);
-				
 			}
 
 			this._activeId = this._firstId;
-			
-	
-
 		},
         setBackgroundGraphic: function($blockElement, options) {
-            if (Adapt.device.screenSize === 'large') {
-                $blockElement.addClass('block-background-block').remove('block-background-block-mobile').css({'background-image': 'url('+options.src+')', 'background-color': options.backgroundColor + ' !important', 'background-repeat': options.backgroundRepeat, 'background-size': options.backgroundSize, 'background-position':options.backgroundPosition, 'min-height' : options.bannerHeight + 'px'});
-            } else {
-                $blockElement.addClass('block-background-block-mobile').remove('block-background-block').css({'background-image': 'url('+options.mobileSrc+')', 'background-color': options.backgroundColor + ' !important', 'background-repeat': options.backgroundRepeat, 'background-size': options.backgroundSize, 'background-position':options.backgroundPosition, 'min-height' : options.mobileBannerHeight + 'px'});
-            }
+			if (options._isActive){
+				if (Adapt.device.screenSize === 'large') {
+					$blockElement.addClass('block-background-block').remove('block-background-block-mobile').css({'background-image': 'url('+options.src+')', 'background-color': options.backgroundColor + ' !important', 'background-repeat': options.backgroundRepeat, 'background-size': options.backgroundSize, 'background-position':options.backgroundPosition, 'min-height' : options.bannerHeight + 'px'});
+				} else {
+					$blockElement.addClass('block-background-block-mobile').remove('block-background-block').css({'background-image': 'url('+options.mobileSrc+')', 'background-color': options.backgroundColor + ' !important', 'background-repeat': options.backgroundRepeat, 'background-size': options.backgroundSize, 'background-position':options.backgroundPosition, 'min-height' : options.mobileBannerHeight + 'px'});
+				}
+			}
         }
-
 	});
 
 	Adapt.on("pageView:postRender", function(view) {
